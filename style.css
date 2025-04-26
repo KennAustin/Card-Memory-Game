@@ -1,0 +1,248 @@
+:root {
+    --primary: #3498db;
+    --secondary: #2ecc71;
+    --dark: #2c3e50;
+    --light: #ecf0f1;
+    --danger: #e74c3c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    width: 100%;
+    max-width: 800px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+h1 {
+    color: var(--dark);
+    font-size: 1.8rem;
+}
+
+.game-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.difficulty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+select, button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.game-info {
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    background: var(--light);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.stat-box {
+    text-align: center;
+}
+
+.stat-box span:first-child {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.stat-box span:last-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    perspective: 1000px;
+}
+
+.card {
+    aspect-ratio: 1;
+    background: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: all 0.5s;
+    position: relative;
+    transform: rotateY(0deg);
+}
+
+.card.flipped {
+    background: white;
+    color: var(--dark);
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card.matched {
+    background: var(--secondary);
+    color: white;
+    cursor: default;
+}
+
+.card::after {
+    content: "?";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: white;
+}
+
+.card.flipped::after {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal h2 {
+    color: var(--secondary);
+    margin-bottom: 15px;
+}
+
+.modal p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.game-board[data-difficulty="easy"] {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.game-board[data-difficulty="medium"] {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+}
+
+.game-board[data-difficulty="hard"] {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+}
+
+/* Adjust card size for different grids */
+.game-board[data-difficulty="easy"] .card {
+    font-size: 2rem;
+}
+
+.game-board[data-difficulty="medium"] .card {
+    font-size: 1.5rem;
+}
+
+.game-board[data-difficulty="hard"] .card {
+    font-size: 1rem;
+}
+
+/* Animations */
+@keyframes cardFlip {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(180deg); }
+}
+
+@keyframes matchAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.card.matched {
+    animation: matchAnimation 0.5s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-board {
+        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-rows: auto !important; /* Let rows wrap naturally */
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .card {
+        font-size: 1.2rem !important;
+    }
+}
